@@ -1,26 +1,3 @@
-// webpack.config.js
-const path = require('path');
-
-module.exports = {
-    entry: './src/index.js',
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
-    },
-    module: {
-        rules: [
-            {
-                test: /.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            }
-        ]
-    },
-    devtool: 'source-map',
-    mode: 'development'
-};
+const path = require('path');\n\nmodule.exports = {\n    entry: './src/index.jsx',\n    output: {\n        path: path.resolve(__dirname, 'dist'),\n        filename: 'bundle.js',\n    },\n    module: {\n        rules: [\n            {\n                test: /\\.jsx?$/,
+                exclude: /node_modules/,\n                use: {\n                    loader: 'babel-loader',\n                    options: {\n                        presets: ['@babel/preset-env', '@babel/preset-react'],\n                    },\n                },\n            },\n            {\n                test: /\\.s[ac]ss$/,
+                use: [\n                    'style-loader',\n                    'css-loader',\n                    'sass-loader',\n                ],\n            },\n        ],\n    },\n    resolve: {\n        extensions: ['.js', '.jsx'],\n    },\n    devtool: 'source-map',\n};
