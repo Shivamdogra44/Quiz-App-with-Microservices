@@ -1,64 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import './QuizPage.css';
 
 const QuizPage = () => {
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [timer, setTimer] = useState(60);
+    const [questions, setQuestions] = useState([]);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [timer, setTimer] = useState(30); // 30 seconds timer
 
-  useEffect(() => {
-    // Fetch quiz questions
-    const fetchQuestions = async () => {
-      // Replace with your API endpoint or mock data
-      const response = await fetch('/api/quiz-questions');
-      const data = await response.json();
-      setQuestions(data);
+    useEffect(() => {
+        // Example questions, you can replace this with an API call
+        const fetchedQuestions = [
+            { question: 'What is the capital of France?', options: ['Paris', 'London', 'Berlin', 'Madrid'], answer: 'Paris' },
+            { question: 'What is 2 + 2?', options: ['3', '4', '5', '6'], answer: '4' },
+        ];
+        setQuestions(fetchedQuestions);
+
+        // Timer logic
+        const timerInterval = setInterval(() => {
+            setTimer(prev => {
+                if (prev <= 1) {
+                    clearInterval(timerInterval);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timerInterval);
+    }, []);
+
+    const handleNextQuestion = () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex(prev => prev + 1);
+            setTimer(30); // Reset timer
+        } // You might want to add logic to handle end of quiz
     };
 
-    fetchQuestions();
-  }, []);
-
-  useEffect(() => {
-    // Timer logic
-    const countdown = setInterval(() => {
-      setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : prevTimer));
-    }, 1000);
-
-    return () => clearInterval(countdown);
-  }, []);
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
-
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-    }
-  };
-
-  return (
-    <div className="quiz-page">
-      <h1>Quiz</h1>
-      <p>Time Remaining: {timer} seconds</p>
-      {questions.length > 0 && (
+    return (
         <div>
-          <h2>{questions[currentQuestionIndex].question}</h2>
-          <ul>
-            {questions[currentQuestionIndex].options.map((option, index) => (
-              <li key={index}>{option}</li>
-            ))}
-          </ul>
+            <h1>Quiz Page</h1>
+            <h2>{questions[currentQuestionIndex]?.question}</h2>
+            <ul>
+                {questions[currentQuestionIndex]?.options.map((option, index) => (
+                    <li key={index}>{option}</li>
+                ))}
+            </ul>
+            <div>Timer: {timer} seconds</div>
+            <button onClick={handleNextQuestion}>Next Question</button>
         </div>
-      )}
-      <div className="navigation-controls">
-        <button onClick={handlePreviousQuestion} disabled={currentQuestionIndex === 0}>Previous</button>
-        <button onClick={handleNextQuestion} disabled={currentQuestionIndex === questions.length - 1}>Next</button>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default QuizPage;
