@@ -1,15 +1,1 @@
-{
-  "name": "quiz-app",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "start": "webpack serve --mode development",
-    "build": "webpack --mode production"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "webpack": "^5.0.0",
-    "webpack-cli": "^4.0.0",
-    "webpack-dev-server": "^4.0.0"
-  }
-}
+{"name": "quiz-app-with-microservices","version": "1.0.0","description": "A Microservices based Quiz App","main": "index.js","scripts": {"start": "node index.js","test": "echo \"Error: no test specified\" && exit 1"},"repository": {"type": "git","url": "git+https://github.com/Shivamdogra44/Quiz-App-with-Microservices.git"},"author": "Shivam Dogra","license": "ISC","bugs": {"url": "https://github.com/Shivamdogra44/Quiz-App-with-Microservices/issues"},"homepage": "https://github.com/Shivamdogra44/Quiz-App-with-Microservices#readme","dependencies": {"express": "^4.17.1","mongoose": "^5.10.9","webpack": "^4.44.2"},"devDependencies": {"webpack-cli": "^4.7.0"}}
