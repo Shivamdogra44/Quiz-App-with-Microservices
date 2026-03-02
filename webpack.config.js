@@ -5,12 +5,13 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
+        publicPath: '/',
     },
     module: {
         rules: [
             {
-                test: /\.jsx?$/, 
-                exclude: /node_modules/, 
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -19,7 +20,11 @@ module.exports = {
                 },
             },
             {
-                test: /\.s[ac]ss$/, 
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.s[ac]ss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
         ],
@@ -28,4 +33,13 @@ module.exports = {
         extensions: ['.js', '.jsx'],
     },
     devtool: 'source-map',
+    devServer: {
+        historyApiFallback: true,
+        port: 3000,
+        proxy: {
+            '/quiz': 'http://localhost:8083',
+            '/question': 'http://localhost:8083',
+            '/result': 'http://localhost:8083',
+        },
+    },
 };

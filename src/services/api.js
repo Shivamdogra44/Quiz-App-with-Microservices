@@ -1,15 +1,15 @@
-// api.js
+// api.js - API service layer connected to the Spring Cloud API Gateway
 
-// Function to make a GET request to the specified microservice
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:8083';
+
 async function getData(url) {
     const response = await fetch(url);
-    if(!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText);
+    if (!response.ok) {
+        throw new Error('Network response was not ok: ' + response.statusText);
     }
-    return await response.json();
+    return response.json();
 }
 
-// Function to make a POST request to the specified microservice
 async function postData(url, data) {
     const response = await fetch(url, {
         method: 'POST',
@@ -18,11 +18,41 @@ async function postData(url, data) {
         },
         body: JSON.stringify(data),
     });
-    if(!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText);
+    if (!response.ok) {
+        throw new Error('Network response was not ok: ' + response.statusText);
     }
-    return await response.json();
+    return response.json();
 }
 
-// Exporting the API functions
+// Quiz endpoints
+export function getQuizzes() {
+    return getData(`${API_BASE_URL}/quiz`);
+}
+
+export function getQuiz(id, noOfQues) {
+    return getData(`${API_BASE_URL}/quiz/${id}/noOfQues/${noOfQues}`);
+}
+
+export function submitAnswers(id, noOfQues, answers) {
+    return postData(`${API_BASE_URL}/quiz/answer/${id}/noOfQues/${noOfQues}`, answers);
+}
+
+// Question endpoints
+export function getQuestions(quizId) {
+    return getData(`${API_BASE_URL}/question/quiz/${quizId}`);
+}
+
+// Result endpoints
+export function getResults() {
+    return getData(`${API_BASE_URL}/result`);
+}
+
+export function getResult(id) {
+    return getData(`${API_BASE_URL}/result/${id}`);
+}
+
+export function createResult(resultData) {
+    return postData(`${API_BASE_URL}/result`, resultData);
+}
+
 export { getData, postData };
